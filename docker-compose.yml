@@ -15,6 +15,7 @@ services:
       SENTRY_EMAIL_HOST: smtp
     volumes:
       - ./data/sentry:/var/lib/sentry/files
+      - ./sentry.conf.py:/etc/sentry/sentry.conf.py
 
   smtp:
     image: tianon/exim4
