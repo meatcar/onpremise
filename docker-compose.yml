@@ -39,6 +39,9 @@ services:
       - smtp
     ports:
       - '9000:9000'
+    environment: 
+      VIRTUAL_HOST: 'example.com'
+      VIRTUAL_PORT: 9000
 
   cron:
     extends: base
@@ -57,3 +60,15 @@ services:
       - postgres
       - memcached
       - smtp
+
+  nginx:
+    image: eforce21/letsencrypt-nginx-proxy
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    environment:
+      LETSENCRYPT_EMAIL: 'info@example.com'
+    restart: always
