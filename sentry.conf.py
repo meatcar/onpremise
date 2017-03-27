@@ -273,6 +273,8 @@ else:
 if SENTRY_OPTIONS['mail.enable-replies']:
     SENTRY_OPTIONS['mail.reply-hostname'] = env('SENTRY_SMTP_HOSTNAME') or ''
 
+SENTRY_OPTIONS['mail.list-namespace'] = env('SENTRY_LIST_NAMESPACE') or 'localhost'
+
 # If this value ever becomes compromised, it's important to regenerate your
 # SENTRY_SECRET_KEY. Changing this value will result in all current sessions
 # being invalidated.

@@ -63,13 +63,32 @@ services:
       - smtp
 
   nginx:
-    image: eforce21/letsencrypt-nginx-proxy
+    image: jwilder/nginx-proxy
     container_name: nginx-proxy
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /etc/nginx/vhosts.d
+      - /etc/nginx/conf.d
+      - /usr/share/nginx/html
+      - /data/certs:/etc/nginx/certs:ro
     environment:
       LETSENCRYPT_EMAIL: 'info@example.com'
     restart: always
+
+  letsencrypt:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    links: 
+      - nginx
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /data/certs:/etc/nginx/certs:rw
+    volumes_from:
+      - nginx
+    environment:
+      LETSENCRYPT_HOST: 'example.com'
+      LETSENCRYPT_EMAIL: 'admin@example.com'
+    restart: always
+    
